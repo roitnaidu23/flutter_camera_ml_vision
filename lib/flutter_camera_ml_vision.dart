@@ -110,7 +110,7 @@ class CameraMlVisionState<T> extends State<CameraMlVision<T>>
       _lastImage = '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}';
       try {
         await _cameraController.initialize();
-        await _cameraController.takePicture(_lastImage);
+        await _cameraController.takePicture();
       } on PlatformException catch (e) {
         debugPrint('$e');
       }
@@ -157,10 +157,10 @@ class CameraMlVisionState<T> extends State<CameraMlVision<T>>
   Future<void> Function() get prepareForVideoRecording =>
       _cameraController.prepareForVideoRecording;
 
-  Future<void> startVideoRecording(String path) async {
-    await _cameraController.stopImageStream();
-    return _cameraController.startVideoRecording(path);
-  }
+//  Future<void> startVideoRecording(String path) async {
+//    await _cameraController.stopImageStream();
+//    return _cameraController.startVideoRecording(path);
+//  }
 
   Future<void> stopVideoRecording() async {
     await _cameraController.stopVideoRecording();
@@ -172,7 +172,8 @@ class CameraMlVisionState<T> extends State<CameraMlVision<T>>
   Future<void> takePicture(String path) async {
     await _stop(false);
     await _cameraController.initialize();
-    await _cameraController.takePicture(path);
+    XFile file =  await _cameraController.takePicture();
+    path = file.path;
     _start();
   }
 
